@@ -16,7 +16,7 @@ class Config extends TaintTracking::Configuration {
         source.asExpr() instanceof NetworkByteSwap
     }
     override predicate isSink(DataFlow::Node sink) {
-        sink.getFunction().getName() = "memcpy"
+        exists(FunctionCall call | call.getTarget().getName() = "memcpy" and sink.asExpr() = call.getArgument(2))
     }
   }
   from Config cfg, DataFlow::PathNode source, DataFlow::PathNode sink
